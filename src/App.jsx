@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const Header = () => (
     <div>
-      <h1>Give gogo</h1>
+      <h1>Give Feedback</h1>
     </div>
 )
 
