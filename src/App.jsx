@@ -2,43 +2,54 @@ import { useState } from 'react'
 
 const Header = () => (
     <div>
-      <h1>Give Feedback</h1>
+      <h1>Give gogo</h1>
     </div>
 )
 
-const SubHeader = (props) => (
+const SubHeader = ({good, neutral, bad}) => (
   <div>
     <h2>Stats</h2>
-    <p>Good Reviews: {props.goodCounter}</p>
-    <p>Neutral Reviews: {props.neutralCounter}</p>
-    <p>Bad Reviews: {props.badCounter}</p>
+    <p>Good Reviews: {good}</p>
+    <p>Neutral Reviews: {neutral}</p>
+    <p>Bad Reviews: {bad}</p>
   </div>
 )
 
-const OtherStats = (props) => (
-  <div>
-    <p>Total Reviews: {props.totalReviews}</p>
-  </div>
-)
-
-const Button = (props) => (
-  <button onClick={props.handleClick}>
-    {props.text}
+const Button = ({handleClick, text}) => (
+  <button onClick={handleClick}>
+    {text}
   </button>
 )
 
+const Stats = ({good, totalReviews}) => {
+  if(totalReviews === 0) {
+    return(
+      <div>
+        <p>Total Reviews: No reviews yet!</p>
+        <p>Average Positive Rating: No reviews yet!</p>
+      </div>
+    )
+  }
+  
+  const positiveAverage = ((good/totalReviews) * 100).toFixed(2)
 
-
-
+  return(
+    <div>
+      <p>Total Reviews: {totalReviews}</p>
+      <p>Average Positive Rating: {positiveAverage}</p>
+    </div>
+  )
+}
 
 const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  const [totalReviews, sumReviews] = useState(0)
+  const [totalReviews, setTotal] = useState(0)
+
+
 
   const incrementGoodReview = newValue => {
-    newValue += 1
     setGood(newValue)
   }
 
@@ -50,23 +61,18 @@ const App = () => {
     setBad(newValue)
   }
 
-  
-  const totalReview = newValue => {
-    newValue = (good + bad + neutral)
-    sumReviews(newValue)
-    console.log(totalReviews)
-
-  }
-
+  const sumTotal = newValue => {
+    setTotal(newValue)
+  }  
 
   return (
     <div>
       <Header />
-      <Button handleClick={() => {incrementGoodReview(good); totalReview()}} text='Good' />
-      <Button handleClick={() => {incrementNeutralReview(neutral); totalReview()}} text='Neutral' />
-      <Button handleClick={() => {incrementBadReview(bad); totalReview()}} text='Bad' />
-      <SubHeader goodCounter={good} neutralCounter={neutral} badCounter={bad}/>
-      <OtherStats totalReviews={totalReviews} />
+      <Button handleClick={() => {sumTotal(totalReviews + 1);incrementGoodReview(good + 1)}} text='Good' />
+      <Button handleClick={() => {sumTotal(totalReviews + 1); incrementNeutralReview(neutral + 1)}} text='Neutral' />
+      <Button handleClick={() => {sumTotal(totalReviews + 1); incrementBadReview(bad + 1)}} text='Bad' />
+      <SubHeader good={good} neutral={neutral} bad={bad}/>
+      <Stats good={good} totalReviews={totalReviews} />
     </div>
   )
 }
