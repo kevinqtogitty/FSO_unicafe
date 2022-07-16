@@ -6,14 +6,41 @@ const Header = () => (
     </div>
 )
 
-const SubHeader = ({good, neutral, bad}) => (
-  <div>
-    <h2>Stats</h2>
-    <p>Good Reviews: {good}</p>
-    <p>Neutral Reviews: {neutral}</p>
-    <p>Bad Reviews: {bad}</p>
-  </div>
-)
+const ReviewCount = ({good, neutral, bad, totalReviews}) => {
+  if(totalReviews === 0) {
+    return(
+      <div>
+
+      </div>
+    )
+  }
+
+  return(
+    <div>
+      <table>
+        <tbody>
+          <tr>
+            <th>Goodness</th>
+            <th>Reviews</th>
+          </tr>
+          <tr>
+            <td>Good</td>
+            <td>{good}</td>
+          </tr>
+          <tr>
+            <td>Neutral</td>
+            <td>{neutral}</td>
+          </tr>
+          <tr>
+            <td>Bad</td>
+            <td>{bad}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 
 const Button = ({handleClick, text}) => (
   <button onClick={handleClick}>
@@ -25,8 +52,7 @@ const Stats = ({good, totalReviews}) => {
   if(totalReviews === 0) {
     return(
       <div>
-        <p>Total Reviews: No reviews yet!</p>
-        <p>Average Positive Rating: No reviews yet!</p>
+        <p>No reviews yet!</p>
       </div>
     )
   }
@@ -36,7 +62,7 @@ const Stats = ({good, totalReviews}) => {
   return(
     <div>
       <p>Total Reviews: {totalReviews}</p>
-      <p>Average Positive Rating: {positiveAverage}</p>
+      <p>Average Positive Rating: {positiveAverage}%</p>
     </div>
   )
 }
@@ -71,7 +97,7 @@ const App = () => {
       <Button handleClick={() => {sumTotal(totalReviews + 1);incrementGoodReview(good + 1)}} text='Good' />
       <Button handleClick={() => {sumTotal(totalReviews + 1); incrementNeutralReview(neutral + 1)}} text='Neutral' />
       <Button handleClick={() => {sumTotal(totalReviews + 1); incrementBadReview(bad + 1)}} text='Bad' />
-      <SubHeader good={good} neutral={neutral} bad={bad}/>
+      <ReviewCount good={good} neutral={neutral} bad={bad} totalReviews={totalReviews}/>
       <Stats good={good} totalReviews={totalReviews} />
     </div>
   )
